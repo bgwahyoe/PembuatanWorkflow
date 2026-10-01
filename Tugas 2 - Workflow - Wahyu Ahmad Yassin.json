@@ -1,0 +1,62 @@
+{
+  "name": "Tugas 2 - Workflow - Wahyu Ahmad Yassin",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "6557042b-7f2c-4100-9156-17d3e1797b8d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "all",
+        "limit": 10,
+        "additionalFields": {
+          "keyword": "Automation"
+        }
+      },
+      "type": "n8n-nodes-base.hackerNews",
+      "typeVersion": 1,
+      "position": [
+        96,
+        0
+      ],
+      "id": "feec1d2a-d840-4fb4-b0ab-18a453d5daf6",
+      "name": "Get many items",
+      "notesInFlow": true,
+      "notes": "Mengambil 10 artikel terbaru"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4390f190-5ef8-408c-a84d-56ff4365a3e6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f45994a60a62c064ee805c0a4b75dd0426ae4b9b42fe6827dfc8301f0d31766e"
+  },
+  "nodeGroups": [],
+  "id": "y0zWQd2inyRvB61G",
+  "tags": []
+}

@@ -1,0 +1,328 @@
+{
+  "name": "Tugas 6 Workflow - Wahyu Ahmad Yassin",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -288,
+        -16
+      ],
+      "id": "bcddc93a-a8a9-4040-b342-80c14cf50bf7",
+      "name": "Telegram Trigger",
+      "webhookId": "c88aac57-cd74-4c92-9f87-4ee1171a9303",
+      "credentials": {
+        "telegramApi": {
+          "id": "wfEYxt2vDg6bOb7n",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "99766d3f-111b-4390-9ca7-2eb4cace9963",
+              "name": "chat",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "b8b573ab-d82d-431f-b19f-4e11ecdcfad0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "fb9dbf72-f4dd-426a-a21e-ce4497d77827",
+              "leftValue": "={{ $json.chat }}",
+              "rightValue": "SEO",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "f572a4a0-794a-4460-b139-a3bb9af4bfb2",
+              "leftValue": "={{ $json.chat }}",
+              "rightValue": "Email Marketing",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "165a074d-c572-4155-abeb-675d425eaceb",
+              "leftValue": "={{ $json.chat }}",
+              "rightValue": "CLV",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "0217229d-e925-4bff-b20b-e58c82e9b765",
+              "leftValue": "={{ $json.chat }}",
+              "rightValue": "Funel",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "b2d822e3-6865-4187-8b0d-7517601fc765",
+              "leftValue": "={{ $json.chat }}",
+              "rightValue": "Webinar",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        -16
+      ],
+      "id": "60710210-3beb-482f-9691-d0f6c31252bc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chat }}",
+        "options": {
+          "systemMessage": "Anda adalah Asisten Spesialis. Anda HANYA boleh menjawab pertanyaan berdasarkan data yang ditemukan di alat/tool Google Sheets yang diberikan kepada Anda. JANGAN menggunakan pengetahuan umum Anda sendiri. Jika data atau jawaban tidak ditemukan di dalam Google Sheets tersebut, katakan dengan jelas bahwa Anda tidak tahu. PENTING: JANGAN menggunakan format markdown seperti tanda bintang (, ) dalam jawaban Anda. Jawablah menggunakan teks biasa (plain text) saja."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        -32
+      ],
+      "id": "f8a93f7f-5519-43ad-8a7a-66f275f8a28e",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "maxTries": 3
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.8-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        176
+      ],
+      "id": "37cee2a8-8013-46bf-80f5-c173867cb2ee",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Tccg9uELDXy9Kd7Y",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1PQ8V4aiGVcB_faA6UOBF6Uh3uCcEZY8_5Xz4hVQbOMg",
+          "mode": "list",
+          "cachedResultName": "04-06 Pertanyaan untuk studi kasus chatbot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PQ8V4aiGVcB_faA6UOBF6Uh3uCcEZY8_5Xz4hVQbOMg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PQ8V4aiGVcB_faA6UOBF6Uh3uCcEZY8_5Xz4hVQbOMg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        176
+      ],
+      "id": "b6207360-ebcf-49e8-a587-04ff30827a10",
+      "name": "FAQ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "T9eh1WhJRY3wZVHb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Maaf, saya adalah Asisten Spesialis Pemasaran Digital. Saya tidak memahami pertanyaan tersebut.   \nSilakan ajukan pertanyaan sesuai topik data saya : \n1. Apa perbedaan mendasar antara SEO dan SEM?\n2. Bagaimana cara mengukur keberhasilan kampanye Email Marketing?\n3. Apa yang dimaksud dengan Customer Lifetime Value (CLV)?\n4. Strategi apa yang paling efektif untuk tahap *Awareness* pada *Marketing Funnel*?\n5. Apa peran *Webinar* dalam *B2B Marketing*?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        -192
+      ],
+      "id": "3471fe4d-e91a-4090-971a-84fdfaf2c812",
+      "name": "Output False",
+      "webhookId": "e8a71c48-d8ba-4d01-9fa5-f922a58f56c1",
+      "credentials": {
+        "telegramApi": {
+          "id": "wfEYxt2vDg6bOb7n",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        -32
+      ],
+      "id": "44f2722a-4115-4288-80c6-c8696fdd34d4",
+      "name": "True Output",
+      "webhookId": "60529dc4-0859-4ef5-8e85-9f20271524d3",
+      "credentials": {
+        "telegramApi": {
+          "id": "wfEYxt2vDg6bOb7n",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Output False",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "True Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4c3f6dee-085f-4086-b209-4c26277024ce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "I0BJu3DXMXfafuDn",
+  "tags": []
+}
